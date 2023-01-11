@@ -1,5 +1,5 @@
-
 import numpy as np
+
 
 def init_grid():
     m = np.zeros((4, 4), dtype=int)
@@ -41,8 +41,10 @@ def init_grid2():
     grid[x2, y2] = 2
     return grid
 
+
 grid1 = init_grid2()
 print(grid1)
+
 
 def add_new2(grid):
     taille = grid.shape
@@ -72,6 +74,7 @@ def add_new2(grid):
 grid2 = add_new2(grid1)
 print(grid2)
 
+
 def add_new(grid):
     taille = grid.shape
     tailley = taille[0]
@@ -89,7 +92,7 @@ def add_new(grid):
             while grid[x1, y1] == 0 and x2 == 0:
                 x2 = np.random.randint(taillex)
 
-    if np.random.randint(0,100) < 80:
+    if np.random.randint(0, 100) < 80:
         grid[x2, y2] = 2
     else:
         grid[x2, y2] = 4
@@ -97,21 +100,22 @@ def add_new(grid):
     return grid
 
 
+row = [2, 4, 4, 2]  # >>>[2, 8, 2, 0]
 
-row = [2, 4, 4, 2]   # >>>[2, 8, 2, 0]
+
 def gauche(row):
+    return ([x for x in row if x != 0] + [0] * 4)[:4]
 
-    return ([x for x in row if x != 0]+[0]*4)[:4]
-
-resultat = 0
 def rollin_row(row):
-    global resultat
+
     row = gauche(row)
     for i in range(1, 4):
-        if row[i] == row[i-1]:
-            row[i-1] *= 2
+        if row[i] == row[i - 1]:
+            row[i - 1] *= 2
             row[i] = 0
-            resultat += row[i-1]
+
     return gauche(row)
 
+
 print(rollin_row(row))
+
