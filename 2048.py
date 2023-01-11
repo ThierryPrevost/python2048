@@ -95,3 +95,22 @@ def add_new(grid):
         grid[x2, y2] = 4
 
     return grid
+
+
+
+row = [2, 4, 4, 2]   # >>>[2, 8, 2, 0]
+def gauche(row):
+    return ([x for x in row if x != 0]+[0]*4)[:4]
+
+resultat = 0
+def rollin_row(row):
+    global resultat
+    row = gauche(row)
+    for i in range(1, 4):
+        if row[i] == row[i-1]:
+            row[i-1] *= 2
+            row[i] = 0
+            resultat += row[i-1]
+    return gauche(row)
+
+print(rollin_row(row))
