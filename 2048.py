@@ -41,7 +41,7 @@ def init_grid2():
     grid[x2, y2] = 2
     return grid
 
-grid1 = init_grid()
+grid1 = init_grid2()
 print(grid1)
 
 def add_new2(grid):
