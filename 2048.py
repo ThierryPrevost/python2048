@@ -100,8 +100,8 @@ def add_new(grid):
 
 row = [2, 4, 4, 2]   # >>>[2, 8, 2, 0]
 def gauche(row):
-    rowsize = len(row)
-    return ([x for x in row if x != 0]+[0]*rowsize)[:rowsize]
+
+    return ([x for x in row if x != 0]+[0]*4)[:4]
 
 resultat = 0
 def rollin_row(row):
