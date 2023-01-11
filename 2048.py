@@ -42,7 +42,7 @@ def init_grid2():
     return grid
 
 grid1 = init_grid2()
-print(grid1)
+#print(grid1)
 
 def add_new2(grid):
     taille = grid.shape
@@ -70,7 +70,7 @@ def add_new2(grid):
 
 
 grid2 = add_new2(grid1)
-print(grid2)
+#print(grid2)
 
 def add_new(grid):
     taille = grid.shape
@@ -103,15 +103,64 @@ def gauche(row):
 
     return ([x for x in row if x != 0]+[0]*4)[:4]
 
-resultat = 0
+#resultat = 0
 def rollin_row(row):
-    global resultat
+    #global resultat
     row = gauche(row)
     for i in range(1, 4):
         if row[i] == row[i-1]:
             row[i-1] *= 2
             row[i] = 0
-            resultat += row[i-1]
+            #resultat += row[i-1]
     return gauche(row)
 
-print(rollin_row(row))
+#print(rollin_row(row))
+
+grid=np.array([[ 8,  0, 16, 0], [ 4,  0,  0,  0], [ 4,  0,  2,  0], [ 0, 32,  2,  0]])
+
+#grid=[[ 0,  2, 2, 0], [ 0,  4,  4,  0], [ 0,  0,  0,  0], [ 0, 0,  0,  0]]
+
+#print(grid)
+def rollin(grid, direction):
+
+    # l (left), r (right), u (up) and d (down).
+    # rot90 sens inverse
+
+    gridrotnew = []
+    gridnew = []
+
+    if direction == 'l':
+        gridrot=grid
+        for row in gridrot:
+            rowrot=gauche(row)
+            gridrotnew.append(rowrot)
+        gridnew=np.rot90(gridrotnew)
+
+    if direction == 'r':
+        gridrot=np.rot90(np.rot90(grid))
+        for row in gridrot:
+            rowrot=gauche(row)
+            gridrotnew.append(rowrot)
+        gridnew=np.rot90((np.rot90(gridrotnew)))
+
+    if direction == 'u':
+        gridrot=np.rot90(grid)
+        for row in gridrot:
+            rowrot=gauche(row)
+            gridrotnew.append(rowrot)
+        gridnew=np.rot90(np.rot90((np.rot90(gridrotnew))))
+
+    if direction == 'd':
+        gridrot=np.rot90(np.rot90((np.rot90(grid))))
+        print(grid)
+        #print(gridrot)
+        for row in gridrot:
+            rowrot=gauche(row)
+            gridrotnew.append(rowrot)
+        gridnew=np.rot90(gridrotnew)
+
+    return gridnew
+
+gridnew = rollin(grid, 'd')
+print(gridnew)
+type(gridnew)
