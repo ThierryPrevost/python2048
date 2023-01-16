@@ -116,32 +116,90 @@ def rollin_row(row):
 
     return gauche(row)
 
-
 print(rollin_row(row))
 
 
 grid3 = np.array([[8, 0, 16, 0], [4, 0, 0, 0], [4, 0, 2, 0], [0, 32, 2, 0]])
 print(grid3)
 
-v = [0] * 16
-def calcul(ligne, pas):
-    for i in range(4):
-        position = rollin_row([v[ligne[k]+pas*i] for k in range(4)])
-        for k in range(4):
-            v[ligne[k]+pas*i] = position[k]
+somme = 0
+
+def rollin2(grid, direction):
+    fus = [[False for _ in range(4)] for _ in range(4)]
+    if direction == 'u':
+        for i in range(4):
+            for j in range(4):
+                pas = 0
+                if i > 0:
+                    for k in range(i):
+                        if grid[k][j] == 0:
+                            pas += 1
+                    if pas > 0:
+                        grid[i - pas][j] = grid[i][j]
+                        grid[i][j] = 0
+                    if grid[i - pas - 1][j] == grid[i - pas][j] and not fus[i - pas][j] \
+                            and not fus[i - pas - 1][j]:
+                        grid[i - pas - 1][j] *= 2
+                        somme += grid[i - pas - 1][j]
+                        grid[i - pas][j] = 0
+                        fus[i - pas - 1][j] = True
+
+    elif direction == 'd':
+        for i in range(3):
+            for j in range(4):
+                pas = 0
+                for k in range(i + 1):
+                    if grid[3 - k][j] == 0:
+                        pas += 1
+                if pas > 0:
+                    grid[2 - i + pas][j] = grid[2 - i][j]
+                    grid[2 - i][j] = 0
+                if 3 - i + pas <= 3:
+                    if grid[2 - i + pas][j] == grid[3 - i + pas][j] and not fus[3 - i + pas][j] \
+                            and not fus[2 - i + pas][j]:
+                        grid[3 - i + pas][j] *= 2
+                        somme += grid[3 - i + pas][j]
+                        grid[2 - i + pas][j] = 0
+                        fus[3 - i + pas][j] = True
+
+    elif direction == 'l':
+        for i in range(4):
+            for j in range(4):
+                pas = 0
+                for k in range(j):
+                    if grid[i][k] == 0:
+                        pas += 1
+                if pas > 0:
+                    grid[i][j - pas] = grid[i][j]
+                    grid[i][j] = 0
+                if grid[i][j - pas] == grid[i][j - pas - 1] and not fus[i][j - pas - 1] \
+                        and not fus[i][j - pas]:
+                    grid[i][j - pas - 1] *= 2
+                    somme += grid[i][j - pas - 1]
+                    grid[i][j - pas] = 0
+                    fus[i][j - pas - 1] = True
+
+    elif direction == 'r':
+        for i in range(4):
+            for j in range(4):
+                pas = 0
+                for k in range(j):
+                    if grid[i][3 - k] == 0:
+                        pas += 1
+                if pas > 0:
+                    grid[i][3 - j + pas] = grid[i][3 - j]
+                    grid[i][3 - j] = 0
+                if 4 - j + pas <= 3:
+                    if grid[i][4 - j + pas] == grid[i][3 - j + pas] and not fus[i][4 - j + pas] \
+                            and not fus[i][3 - j + pas]:
+                        grid[i][4 - j + pas] *= 2
+                        somme += grid[i][4 - j + pas]
+                        grid[i][3 - j + pas] = 0
+                        fus[i][4 - j + pas] = True
+    return grid
 
 
+direction = 'r'
+print(rollin2(grid3, direction))
 
-def rollin(grid, direction):
-    # direction: l (left) r (right) u (up) and d (down)
-    new_grid = np.array(4, 4)
-
-    for i in range(1, 4):
-        for j in grid:
-            if direction == "l":
-                new_grid[i] = rollin_row(j)
-
-    return new_grid
-
-print(rollin(grid3, "l"))
 
